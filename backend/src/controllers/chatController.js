@@ -3,7 +3,10 @@ const geminiService = require('../services/geminiService');
 
 const chatController = {
   chat: async (req, res, next) => {
-    logger.info({ requestId: req.id }, '[ChatController] Received request for chat');
+    logger.info(
+      { requestId: req.id },
+      '[ChatController] Received request for chat',
+    );
     try {
       const { documentContext, question } = req.body;
       const answer = await geminiService.chatWithDocument(

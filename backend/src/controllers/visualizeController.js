@@ -3,7 +3,10 @@ const geminiService = require('../services/geminiService');
 
 const visualizeController = {
   generateChartData: async (req, res, next) => {
-    logger.info({ requestId: req.id }, '[VisualizeController] Received request for visualization data');
+    logger.info(
+      { requestId: req.id },
+      '[VisualizeController] Received request for visualization data',
+    );
     try {
       const { text } = req.body;
       const visualizationData = await geminiService.generateVisualizationData(
@@ -12,7 +15,10 @@ const visualizeController = {
       );
       return res.json(visualizationData);
     } catch (error) {
-      logger.error({ requestId: req.id, err: error }, 'Error generating visualization data');
+      logger.error(
+        { requestId: req.id, err: error },
+        'Error generating visualization data',
+      );
       return next(error);
     }
   },

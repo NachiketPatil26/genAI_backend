@@ -1,4 +1,3 @@
-
 const { validationResult } = require('express-validator');
 const logger = require('../config/logger');
 

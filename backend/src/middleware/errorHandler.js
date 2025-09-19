@@ -1,4 +1,3 @@
-
 const logger = require('../config/logger');
 
 // eslint-disable-next-line no-unused-vars

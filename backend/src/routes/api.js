@@ -27,9 +27,24 @@ router.get('/document/:id', documentController.getDocument);
 
 // AI processing endpoints
 router.post('/jargon', textValidation, validate, jargonController.detectJargon);
-router.post('/risk-radar', textValidation, validate, riskController.analyzeRisk);
-router.post('/translate', translateValidation, validate, translateController.translate);
-router.post('/visualize', textValidation, validate, visualizeController.generateChartData);
+router.post(
+  '/risk-radar',
+  textValidation,
+  validate,
+  riskController.analyzeRisk,
+);
+router.post(
+  '/translate',
+  translateValidation,
+  validate,
+  translateController.translate,
+);
+router.post(
+  '/visualize',
+  textValidation,
+  validate,
+  visualizeController.generateChartData,
+);
 router.post('/chat', chatValidation, validate, chatController.chat);
 
 module.exports = router;

@@ -3,7 +3,10 @@ const geminiService = require('../services/geminiService');
 
 const translateController = {
   translate: async (req, res, next) => {
-    logger.info({ requestId: req.id }, '[TranslateController] Received request for translation');
+    logger.info(
+      { requestId: req.id },
+      '[TranslateController] Received request for translation',
+    );
     try {
       const { text, targetLanguage } = req.body;
       const translatedText = await geminiService.translateAndSimplify(

@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const DocumentSchema = new mongoose.Schema(

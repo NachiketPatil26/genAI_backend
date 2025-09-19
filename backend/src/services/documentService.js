@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const pdf = require('pdf-parse');
 const logger = require('../config/logger');
@@ -16,7 +15,10 @@ class DocumentService {
       } else if (document.mimeType === 'text/plain') {
         text = dataBuffer.toString('utf8');
       } else {
-        logger.warn({ documentId: document._id, mimeType: document.mimeType }, 'Unsupported file type for text extraction');
+        logger.warn(
+          { documentId: document._id, mimeType: document.mimeType },
+          'Unsupported file type for text extraction',
+        );
         throw new Error(`Unsupported file type: ${document.mimeType}`);
       }
 
@@ -25,10 +27,16 @@ class DocumentService {
       document.processingStatus = 'completed';
       await document.save();
 
-      logger.info({ documentId: document._id }, 'Text extraction completed successfully');
+      logger.info(
+        { documentId: document._id },
+        'Text extraction completed successfully',
+      );
       return text;
     } catch (error) {
-      logger.error({ documentId: document._id, err: error }, 'Error during text extraction');
+      logger.error(
+        { documentId: document._id, err: error },
+        'Error during text extraction',
+      );
       // Update the document status to failed
       document.processingStatus = 'failed';
       await document.save();

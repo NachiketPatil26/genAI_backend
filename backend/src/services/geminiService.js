@@ -77,7 +77,10 @@ class GeminiService {
   }
 
   async translateAndSimplify(text, targetLanguage, requestId) {
-    logger.info({ requestId }, '[GeminiService] Translating and simplifying text');
+    logger.info(
+      { requestId },
+      '[GeminiService] Translating and simplifying text',
+    );
     const prompt = `
       Translate this legal text to ${targetLanguage} and simplify it to plain language.
       Remove all legal jargon and make it understandable for a layperson.
