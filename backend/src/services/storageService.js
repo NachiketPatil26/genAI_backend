@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 const fs = require('fs');
 const path = require('path');
 const logger = require('../config/logger');
@@ -22,7 +23,7 @@ class StorageService {
           return reject(err);
         }
         logger.info(`File saved to ${filePath}`);
-        resolve({ path: filePath, name: fileName });
+        return resolve({ path: filePath, name: fileName }); // Added return here
       });
     });
   }
@@ -33,3 +34,4 @@ class StorageService {
 }
 
 module.exports = new StorageService();
+/* eslint-enable class-methods-use-this */

@@ -1,8 +1,9 @@
+/* eslint-disable no-underscore-dangle */
+const mongoose = require('mongoose');
 const logger = require('../config/logger');
 const documentService = require('../services/documentService');
 const storageService = require('../services/storageService');
 const Document = require('../models/Document');
-const mongoose = require('mongoose');
 
 const documentController = {
   upload: async (req, res, next) => {
@@ -10,7 +11,10 @@ const documentController = {
       { requestId: req.id },
       '[DocumentController] Received request for document upload',
     );
-    logger.debug({ requestId: req.id, files: req.files }, '[DocumentController] req.files content');
+    logger.debug(
+      { requestId: req.id, files: req.files },
+      '[DocumentController] req.files content',
+    );
     try {
       if (!req.files || Object.keys(req.files).length === 0) {
         logger.warn(
@@ -21,11 +25,17 @@ const documentController = {
       }
 
       const uploadedFile = req.files.document; // 'document' is the name of the form field
-      logger.debug({ requestId: req.id, uploadedFile: uploadedFile }, '[DocumentController] uploadedFile content');
+      logger.debug(
+        { requestId: req.id, uploadedFile },
+        '[DocumentController] uploadedFile content',
+      );
 
       // Save the file using the storage service
       const { path: storagePath } = await storageService.save(uploadedFile);
-      logger.debug({ requestId: req.id, storagePath: storagePath }, '[DocumentController] File saved to storage');
+      logger.debug(
+        { requestId: req.id, storagePath },
+        '[DocumentController] File saved to storage',
+      );
 
       // Create a document record in the database
       const document = await Document.create({
@@ -95,3 +105,4 @@ const documentController = {
 };
 
 module.exports = documentController;
+/* eslint-enable no-underscore-dangle */

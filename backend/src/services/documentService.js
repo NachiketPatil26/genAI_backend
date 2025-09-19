@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this, no-underscore-dangle */
 const fs = require('fs');
 const pdf = require('pdf-parse');
 const logger = require('../config/logger');
@@ -23,7 +24,9 @@ class DocumentService {
       }
 
       // Update the document in the database with the extracted text
+      // eslint-disable-next-line no-param-reassign
       document.extractedText = text;
+      // eslint-disable-next-line no-param-reassign
       document.processingStatus = 'completed';
       await document.save();
 
@@ -38,6 +41,7 @@ class DocumentService {
         'Error during text extraction',
       );
       // Update the document status to failed
+      // eslint-disable-next-line no-param-reassign
       document.processingStatus = 'failed';
       await document.save();
       throw error; // Re-throw the error to be handled by the controller
@@ -46,3 +50,4 @@ class DocumentService {
 }
 
 module.exports = new DocumentService();
+/* eslint-enable class-methods-use-this, no-underscore-dangle */

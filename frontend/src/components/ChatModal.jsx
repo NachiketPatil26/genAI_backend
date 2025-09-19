@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const ChatModal = ({ isOpen, onClose, documentContext }) => {
+const ChatModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (

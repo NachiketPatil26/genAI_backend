@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { UploadCloud } from 'lucide-react';
 import { uploadDocument } from '../services/api';
