@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this, no-underscore-dangle */
 const fs = require('fs');
-const pdf = require('pdf-parse');
 const logger = require('../config/logger');
+const documentAIService = require('./documentAIService'); // Import the new service
 
 class DocumentService {
   async extractText(document) {
@@ -11,8 +11,13 @@ class DocumentService {
 
       let text;
       if (document.mimeType === 'application/pdf') {
-        const data = await pdf(dataBuffer);
-        text = data.text;
+        logger.info({ documentId: document._id }, 'Processing PDF with Document AI');
+        const docAiResult = await documentAIService.processDocument(
+          dataBuffer,
+          document.mimeType,
+        );
+        text = docAiResult.text; // Document AI result has a .text property for full text
+        // Future: Store structured data from docAiResult if needed
       } else if (document.mimeType === 'text/plain') {
         text = dataBuffer.toString('utf8');
       } else {
