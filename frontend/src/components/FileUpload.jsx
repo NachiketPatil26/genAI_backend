@@ -1,16 +1,34 @@
 
 import React, { useRef } from 'react';
+import axios from 'axios';
 
 const FileUpload = ({ onUploadSuccess, setIsLoading, setError }) => {
   const fileInputRef = useRef(null);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      console.log('Selected file:', file);
-      // Here you would typically handle the file upload, e.g.,
-      // call an API, set loading state, etc.
-      // For now, just logging.
+    if (!file) return;
+
+    setIsLoading(true);
+    setError(null); // Clear previous errors
+
+    const formData = new FormData();
+    formData.append('document', file); // 'document' must match the field name in backend's fileUpload middleware
+
+    try {
+      const response = await axios.post('http://localhost:3001/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      onUploadSuccess(response.data);
+    } catch (err) {
+      console.error('File upload error:', err);
+      setError(err.response?.data?.error || 'Failed to upload file.');
+    } finally {
+      setIsLoading(false);
+      // Clear the file input value to allow re-uploading the same file
+      event.target.value = null;
     }
   };
 
