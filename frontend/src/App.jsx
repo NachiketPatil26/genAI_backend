@@ -14,7 +14,9 @@ function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleUploadSuccess = (data) => {
+    console.log('Received data from upload:', data);
     setDocumentData(data);
+    console.log('documentData after set:', data); // Log the data directly as state update is async
     setAnalysisResults({}); // Reset previous results
     setError(null);
   };

@@ -45,7 +45,7 @@ const documentController = {
       await document.save();
 
       // Don't wait for extraction to finish to send the response
-      documentService.extractText(document);
+      await documentService.extractText(document);
 
       logger.info(
         { requestId: req.id, documentId: document._id },
