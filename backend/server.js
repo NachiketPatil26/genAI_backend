@@ -7,7 +7,14 @@ const helmet = require('helmet');
 const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
+const logger = require('./src/config/logger');
+
+const connectDB = require('./src/config/database');
+
 const app = express();
+
+// Connect to database
+connectDB();
 
 // Middleware
 app.use(helmet());
@@ -24,17 +31,20 @@ app.use(
 // mongoose.connect(process.env.MONGODB_URI);
 // const redisClient = redis.createClient({ url: process.env.REDIS_URL });
 
+// Apply rate limiter to all API requests
+app.use('/api', require('./src/middleware/rateLimiter'));
+
 // Routes
 app.use('/api', require('./src/routes/api'));
 
 // Error handling
-// app.use(require('./src/middleware/errorHandler'));
+app.use(require('./src/middleware/errorHandler'));
 
 const PORT = process.env.PORT || 3001;
 
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    logger.info(`Server running on port ${PORT}`);
   });
 }
 

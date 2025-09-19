@@ -3,6 +3,13 @@ const express = require('express');
 
 const router = express.Router();
 
+const validate = require('../middleware/validate');
+const {
+  textValidation,
+  translateValidation,
+  chatValidation,
+} = require('../validators/aiValidators');
+
 // const auth = require('../middleware/auth');
 // const rateLimiter = require('../middleware/rateLimiter');
 
@@ -19,10 +26,10 @@ router.post('/upload', documentController.upload);
 router.get('/document/:id', documentController.getDocument);
 
 // AI processing endpoints
-router.post('/jargon', jargonController.detectJargon);
-router.post('/risk-radar', riskController.analyzeRisk);
-router.post('/translate', translateController.translate);
-router.post('/visualize', visualizeController.generateChartData);
-router.post('/chat', chatController.chat);
+router.post('/jargon', textValidation, validate, jargonController.detectJargon);
+router.post('/risk-radar', textValidation, validate, riskController.analyzeRisk);
+router.post('/translate', translateValidation, validate, translateController.translate);
+router.post('/visualize', textValidation, validate, visualizeController.generateChartData);
+router.post('/chat', chatValidation, validate, chatController.chat);
 
 module.exports = router;

@@ -1,5 +1,5 @@
-// src/services/geminiService.js
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const logger = require('../config/logger');
 
 class GeminiService {
   constructor() {
@@ -12,7 +12,6 @@ class GeminiService {
     if (match && match[1]) {
       return match[1];
     }
-    // Fallback for cases where the markdown is not present
     const jsonMatch = text.match(/(\{[\s\S]*\})/);
     if (jsonMatch && jsonMatch[1]) {
       return jsonMatch[1];
@@ -20,8 +19,8 @@ class GeminiService {
     return text;
   }
 
-  async detectJargon(text) {
-    console.log('[GeminiService] Detecting jargon');
+  async detectJargon(text, requestId) {
+    logger.info({ requestId }, '[GeminiService] Detecting jargon');
     const prompt = `
       Analyze this legal text and identify all legal jargon terms.
       Return JSON with format:
@@ -39,19 +38,17 @@ class GeminiService {
       Text: ${text}
     `;
 
-    console.log('[GeminiService] Sending prompt for jargon detection:', prompt);
+    logger.debug({ requestId }, 'Sending prompt for jargon detection');
     const result = await this.model.generateContent(prompt);
     const responseText = result.response.text();
-    console.log(
-      '[GeminiService] Received response for jargon detection:',
-      responseText,
-    );
+    logger.debug({ requestId }, 'Received response for jargon detection');
+
     const jsonText = GeminiService.extractJson(responseText);
     return JSON.parse(jsonText);
   }
 
-  async analyzeRisk(text) {
-    console.log('[GeminiService] Analyzing risk');
+  async analyzeRisk(text, requestId) {
+    logger.info({ requestId }, '[GeminiService] Analyzing risk');
     const prompt = `
       Identify risky clauses in this legal document.
       Return JSON with format:
@@ -70,19 +67,17 @@ class GeminiService {
       Document: ${text}
     `;
 
-    console.log('[GeminiService] Sending prompt for risk analysis:', prompt);
+    logger.debug({ requestId }, 'Sending prompt for risk analysis');
     const result = await this.model.generateContent(prompt);
     const responseText = result.response.text();
-    console.log(
-      '[GeminiService] Received response for risk analysis:',
-      responseText,
-    );
+    logger.debug({ requestId }, 'Received response for risk analysis');
+
     const jsonText = GeminiService.extractJson(responseText);
     return JSON.parse(jsonText);
   }
 
-  async translateAndSimplify(text, targetLanguage) {
-    console.log('[GeminiService] Translating and simplifying text');
+  async translateAndSimplify(text, targetLanguage, requestId) {
+    logger.info({ requestId }, '[GeminiService] Translating and simplifying text');
     const prompt = `
       Translate this legal text to ${targetLanguage} and simplify it to plain language.
       Remove all legal jargon and make it understandable for a layperson.
@@ -90,21 +85,16 @@ class GeminiService {
       Text: ${text}
     `;
 
-    console.log(
-      '[GeminiService] Sending prompt for translation and simplification:',
-      prompt,
-    );
+    logger.debug({ requestId }, 'Sending prompt for translation');
     const result = await this.model.generateContent(prompt);
     const responseText = result.response.text();
-    console.log(
-      '[GeminiService] Received response for translation and simplification:',
-      responseText,
-    );
+    logger.debug({ requestId }, 'Received response for translation');
+
     return responseText;
   }
 
-  async generateVisualizationData(text) {
-    console.log('[GeminiService] Generating visualization data');
+  async generateVisualizationData(text, requestId) {
+    logger.info({ requestId }, '[GeminiService] Generating visualization data');
     const prompt = `
       Analyze this legal document and provide data for visualization.
       Return JSON with:
@@ -126,22 +116,17 @@ class GeminiService {
       Document: ${text}
     `;
 
-    console.log(
-      '[GeminiService] Sending prompt for visualization data:',
-      prompt,
-    );
+    logger.debug({ requestId }, 'Sending prompt for visualization');
     const result = await this.model.generateContent(prompt);
     const responseText = result.response.text();
-    console.log(
-      '[GeminiService] Received response for visualization data:',
-      responseText,
-    );
+    logger.debug({ requestId }, 'Received response for visualization');
+
     const jsonText = GeminiService.extractJson(responseText);
     return JSON.parse(jsonText);
   }
 
-  async chatWithDocument(documentContext, question) {
-    console.log('[GeminiService] Chatting with document');
+  async chatWithDocument(documentContext, question, requestId) {
+    logger.info({ requestId }, '[GeminiService] Chatting with document');
     const prompt = `
       Based ONLY on this document context, answer the user's question.
       If the answer is not in the document, say so.
@@ -150,10 +135,11 @@ class GeminiService {
       Question: ${question}
     `;
 
-    console.log('[GeminiService] Sending prompt for chat:', prompt);
+    logger.debug({ requestId }, 'Sending prompt for chat');
     const result = await this.model.generateContent(prompt);
     const responseText = result.response.text();
-    console.log('[GeminiService] Received response for chat:', responseText);
+    logger.debug({ requestId }, 'Received response for chat');
+
     return responseText;
   }
 }
