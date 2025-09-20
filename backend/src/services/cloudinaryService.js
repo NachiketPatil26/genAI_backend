@@ -4,20 +4,12 @@ const logger = require('../config/logger');
 
 class CloudinaryService {
   constructor() {
-    if (
-      process.env.CLOUDINARY_CLOUD_NAME &&
-      process.env.CLOUDINARY_API_KEY &&
-      process.env.CLOUDINARY_API_SECRET
-    ) {
-      cloudinary.config({
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-        secure: true,
-      });
-      logger.info('Cloudinary service configured.');
+    // The CLOUDINARY_URL environment variable contains all config details.
+    // The Cloudinary SDK automatically uses it if it's set.
+    if (process.env.CLOUDINARY_URL) {
+      logger.info('Cloudinary service configured via CLOUDINARY_URL.');
     } else {
-      logger.warn('Cloudinary environment variables not set. File uploads will fail in production.');
+      logger.warn('CLOUDINARY_URL not set. File uploads will fail in production.');
     }
   }
 
