@@ -17,7 +17,7 @@ const SentimentAnalysisTab = ({ documentId }) => {
       setError(null);
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/document/${documentId}/sentiment`,
+          `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/document/${documentId}/sentiment`,
         );
         setSentimentResults(response.data.sentiment);
       } catch (err) {
