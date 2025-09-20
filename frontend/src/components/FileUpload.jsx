@@ -9,6 +9,7 @@ const FileUpload = ({ onUploadSuccess, setIsLoading, setError }) => {
     const file = event.target.files[0];
     if (!file) return;
 
+    console.log('File selected:', file.name);
     setIsLoading(true);
     setError(null); // Clear previous errors
 
@@ -16,15 +17,26 @@ const FileUpload = ({ onUploadSuccess, setIsLoading, setError }) => {
     formData.append('document', file); // 'document' must match the field name in backend's fileUpload middleware
 
     try {
+      console.log('Sending file upload request to backend...');
       const response = await axios.post('http://localhost:3001/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log('File upload successful, response:', response.data);
       onUploadSuccess(response.data);
     } catch (err) {
       console.error('File upload error:', err);
-      setError(err.response?.data?.error || 'Failed to upload file.');
+      if (err.response) {
+        console.error('Error response:', err.response.data);
+        setError(err.response.data.error || 'Failed to upload file.');
+      } else if (err.request) {
+        console.error('Error request:', err.request);
+        setError('No response from server. Is the backend running?');
+      } else {
+        console.error('Error message:', err.message);
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setIsLoading(false);
       // Clear the file input value to allow re-uploading the same file
