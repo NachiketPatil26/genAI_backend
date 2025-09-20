@@ -3,10 +3,12 @@ import JargonTab from './JargonTab';
 import RiskRadarTab from './RiskRadarTab';
 import TranslateTab from './TranslateTab';
 import VisualizeTab from './VisualizeTab';
+import SentimentAnalysisTab from './SentimentAnalysisTab';
 
-const TABS = ['Jargon', 'Risk Radar', 'Translate', 'Visualize'];
 
-const AnalysisPanel = ({ documentText, setAnalysisResults, analysisResults, setError }) => {
+const TABS = ['Jargon', 'Risk Radar', 'Translate', 'Visualize', 'Trustworthiness', 'NLP Details']; // Updated TABS array
+
+const AnalysisPanel = ({ documentText, setAnalysisResults, analysisResults, setError, documentId }) => {
   const [activeTab, setActiveTab] = useState(TABS[0]);
 
   const renderTabContent = () => {
@@ -19,6 +21,8 @@ const AnalysisPanel = ({ documentText, setAnalysisResults, analysisResults, setE
         return <TranslateTab text={documentText} results={analysisResults.translation} setAnalysisResults={setAnalysisResults} setError={setError} />;
       case 'Visualize':
         return <VisualizeTab text={documentText} results={analysisResults.visualization} setAnalysisResults={setAnalysisResults} setError={setError} />;
+      case 'Trustworthiness':
+        return <SentimentAnalysisTab documentId={documentId} />;
       default:
         return null;
     }

@@ -16,7 +16,7 @@ const FileUpload = ({ onUploadSuccess, setIsLoading, setError }) => {
     formData.append('document', file); // 'document' must match the field name in backend's fileUpload middleware
 
     try {
-      const response = await axios.post('http://localhost:3001/api/upload', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

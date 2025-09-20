@@ -54,6 +54,7 @@ function App() {
               setAnalysisResults={setAnalysisResults}
               analysisResults={analysisResults}
               setError={setError}
+              documentId={documentData._id} // Pass documentId here
             />
           </div>
         )}

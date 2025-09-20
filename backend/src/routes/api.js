@@ -20,6 +20,7 @@ const riskController = require('../controllers/riskController');
 const translateController = require('../controllers/translateController');
 const visualizeController = require('../controllers/visualizeController');
 const chatController = require('../controllers/chatController');
+const naturalLanguageController = require('../controllers/naturalLanguageController'); // New import - RE-ENABLED
 
 // Document endpoints
 router.post('/upload', documentController.upload);
@@ -46,5 +47,11 @@ router.post(
   visualizeController.generateChartData,
 );
 router.post('/chat', chatValidation, validate, chatController.chat);
+
+// Natural Language API endpoints (New)
+router.get(
+  '/document/:documentId/sentiment',
+  naturalLanguageController.analyzeSentiment,
+);
 
 module.exports = router;
