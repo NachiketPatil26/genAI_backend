@@ -12,7 +12,9 @@ const getGoogleAuthClient = async () => {
       });
       // Attempt to get credentials to verify setup
       await authClient.getCredentials();
-      logger.info('Google Cloud authentication client initialized successfully.');
+      logger.info(
+        'Google Cloud authentication client initialized successfully.',
+      );
     } catch (error) {
       logger.error(
         { err: error },

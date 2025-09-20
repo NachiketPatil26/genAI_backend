@@ -18,7 +18,10 @@ class DocumentAIService {
         this.client = new DocumentProcessorServiceClient({ authClient });
         logger.info('Document AI client initialized.');
       } catch (error) {
-        logger.error({ err: error }, 'Failed to initialize Document AI client.');
+        logger.error(
+          { err: error },
+          'Failed to initialize Document AI client.',
+        );
         throw error;
       }
     }
@@ -28,7 +31,9 @@ class DocumentAIService {
     await this.initializeClient();
 
     if (!this.projectId || !this.location || !this.processorId) {
-      logger.error('Missing Document AI configuration: projectId, location, or processorId.');
+      logger.error(
+        'Missing Document AI configuration: projectId, location, or processorId.',
+      );
       throw new Error('Document AI configuration is incomplete.');
     }
 
@@ -43,14 +48,21 @@ class DocumentAIService {
     };
 
     try {
-      logger.info(`[DocumentAIService] Making Document AI API call to processor: ${name}`);
+      logger.info(
+        `[DocumentAIService] Making Document AI API call to processor: ${name}`,
+      );
       // IMPORTANT: Monitor your Google Cloud billing dashboard and set up budget alerts
       // to stay within free tier limits. Application-level quota enforcement is not reliable.
       const [result] = await this.client.processDocument(request);
-      logger.info('[DocumentAIService] Document AI processing completed successfully.');
+      logger.info(
+        '[DocumentAIService] Document AI processing completed successfully.',
+      );
       return result.document;
     } catch (error) {
-      logger.error({ err: error }, '[DocumentAIService] Error processing document with Document AI.');
+      logger.error(
+        { err: error },
+        '[DocumentAIService] Error processing document with Document AI.',
+      );
       throw error;
     }
   }

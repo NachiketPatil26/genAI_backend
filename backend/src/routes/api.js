@@ -49,6 +49,9 @@ router.post(
 router.post('/chat', chatValidation, validate, chatController.chat);
 
 // Natural Language API endpoints (New)
-router.get('/document/:documentId/sentiment', naturalLanguageController.analyzeSentiment);
+router.get(
+  '/document/:documentId/sentiment',
+  naturalLanguageController.analyzeSentiment,
+);
 
 module.exports = router;

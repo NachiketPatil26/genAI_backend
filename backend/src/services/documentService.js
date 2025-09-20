@@ -12,7 +12,10 @@ class DocumentService {
 
       let text;
       if (document.mimeType === 'application/pdf') {
-        logger.info({ documentId: document._id }, 'Processing PDF with Document AI');
+        logger.info(
+          { documentId: document._id },
+          'Processing PDF with Document AI',
+        );
         const docAiResult = await documentAIService.processDocument(
           dataBuffer,
           document.mimeType,
@@ -20,7 +23,10 @@ class DocumentService {
         text = docAiResult.text; // Document AI result has a .text property for full text
         // Future: Store structured data from docAiResult if needed
       } else if (document.mimeType.startsWith('image/')) {
-        logger.info({ documentId: document._id }, 'Processing image with Cloud Vision API');
+        logger.info(
+          { documentId: document._id },
+          'Processing image with Cloud Vision API',
+        );
         text = await visionService.detectTextFromImage(dataBuffer);
       } else if (document.mimeType === 'text/plain') {
         text = dataBuffer.toString('utf8');

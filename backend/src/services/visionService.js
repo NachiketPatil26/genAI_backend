@@ -15,7 +15,10 @@ class VisionService {
         this.client = new vision.ImageAnnotatorClient({ authClient });
         logger.info('Cloud Vision API client initialized.');
       } catch (error) {
-        logger.error({ err: error }, 'Failed to initialize Cloud Vision API client.');
+        logger.error(
+          { err: error },
+          'Failed to initialize Cloud Vision API client.',
+        );
         throw error;
       }
     }
@@ -29,7 +32,9 @@ class VisionService {
     };
 
     try {
-      logger.info('[VisionService] Making Cloud Vision API call for text detection.');
+      logger.info(
+        '[VisionService] Making Cloud Vision API call for text detection.',
+      );
       // IMPORTANT: Monitor your Google Cloud billing dashboard and set up budget alerts
       // to stay within free tier limits. Application-level quota enforcement is not reliable.
       const [result] = await this.client.textDetection(request);
@@ -41,7 +46,10 @@ class VisionService {
       logger.warn('[VisionService] No text detected in the image.');
       return '';
     } catch (error) {
-      logger.error({ err: error }, '[VisionService] Error detecting text from image.');
+      logger.error(
+        { err: error },
+        '[VisionService] Error detecting text from image.',
+      );
       throw error;
     }
   }
