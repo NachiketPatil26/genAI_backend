@@ -2,6 +2,7 @@
 const fs = require('fs');
 const logger = require('../config/logger');
 const documentAIService = require('./documentAIService'); // Import the new service
+const visionService = require('./visionService'); // Import the new Vision service
 
 class DocumentService {
   async extractText(document) {
@@ -18,12 +19,15 @@ class DocumentService {
         );
         text = docAiResult.text; // Document AI result has a .text property for full text
         // Future: Store structured data from docAiResult if needed
+      } else if (document.mimeType.startsWith('image/')) {
+        logger.info({ documentId: document._id }, 'Processing image with Cloud Vision API');
+        text = await visionService.detectTextFromImage(dataBuffer);
       } else if (document.mimeType === 'text/plain') {
         text = dataBuffer.toString('utf8');
       } else {
         logger.warn(
           { documentId: document._id, mimeType: document.mimeType },
-          'Unsupported file type for text extraction',
+          'Unsupported file type for text extraction (supported: PDF, images, plain text)',
         );
         throw new Error(`Unsupported file type: ${document.mimeType}`);
       }
