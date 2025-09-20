@@ -22,6 +22,8 @@ app.use(cors({ origin: '*' })); // Allow all origins for now
 app.use(express.json({ limit: '50mb' }));
 app.use(
   fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
     abortOnLimit: true,
   }),

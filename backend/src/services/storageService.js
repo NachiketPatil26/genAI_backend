@@ -1,34 +1,28 @@
 /* eslint-disable class-methods-use-this */
-const fs = require('fs');
-const path = require('path');
 const logger = require('../config/logger');
-
-const uploadDir = path.join(__dirname, '../../uploads');
-
-// Ensure the upload directory exists
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-  logger.info(`Created upload directory at: ${uploadDir}`);
-}
+const cloudinaryService = require('./cloudinaryService');
 
 class StorageService {
   async save(file) {
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(uploadDir, fileName);
+    try {
+      // Upload the file to Cloudinary
+      const result = await cloudinaryService.uploadFile(file);
 
-    return new Promise((resolve, reject) => {
-      file.mv(filePath, (err) => {
-        if (err) {
-          logger.error({ err }, 'Error saving file to local storage');
-          return reject(err);
-        }
-        logger.info(`File saved to ${filePath}`);
-        return resolve({ path: filePath, name: fileName }); // Added return here
-      });
-    });
+      // The `storagePath` will now be the secure URL from Cloudinary
+      const storagePath = result.secure_url;
+      const fileName = result.original_filename;
+
+      logger.info(`File stored in Cloudinary. URL: ${storagePath}`);
+
+      // Return the path and name, consistent with the previous implementation
+      return { path: storagePath, name: fileName };
+    } catch (error) {
+      logger.error({ err: error }, 'Error saving file via StorageService.');
+      throw error;
+    }
   }
 
-  // In the future, you could add methods here to interact with S3, GCS, etc.
+  // In the future, you could add methods here to interact with other storage providers.
   // async get(fileName) { ... }
   // async delete(fileName) { ... }
 }
