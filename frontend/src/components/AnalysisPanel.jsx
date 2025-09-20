@@ -4,7 +4,7 @@ import RiskRadarTab from './RiskRadarTab';
 import TranslateTab from './TranslateTab';
 import VisualizeTab from './VisualizeTab';
 import SentimentAnalysisTab from './SentimentAnalysisTab';
-import NlpDetailsTab from './NlpDetailsTab'; // New import
+
 
 const TABS = ['Jargon', 'Risk Radar', 'Translate', 'Visualize', 'Trustworthiness', 'NLP Details']; // Updated TABS array
 
@@ -23,8 +23,6 @@ const AnalysisPanel = ({ documentText, setAnalysisResults, analysisResults, setE
         return <VisualizeTab text={documentText} results={analysisResults.visualization} setAnalysisResults={setAnalysisResults} setError={setError} />;
       case 'Trustworthiness':
         return <SentimentAnalysisTab documentId={documentId} />;
-      case 'NLP Details': // New case for NLP Details tab
-        return <NlpDetailsTab documentId={documentId} />;
       default:
         return null;
     }
