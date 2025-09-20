@@ -43,12 +43,14 @@ class DocumentAIService {
     };
 
     try {
-      logger.info(`Sending document to Document AI processor: ${name}`);
+      logger.info(`[DocumentAIService] Making Document AI API call to processor: ${name}`);
+      // IMPORTANT: Monitor your Google Cloud billing dashboard and set up budget alerts
+      // to stay within free tier limits. Application-level quota enforcement is not reliable.
       const [result] = await this.client.processDocument(request);
-      logger.info('Document AI processing completed.');
+      logger.info('[DocumentAIService] Document AI processing completed successfully.');
       return result.document;
     } catch (error) {
-      logger.error({ err: error }, 'Error processing document with Document AI.');
+      logger.error({ err: error }, '[DocumentAIService] Error processing document with Document AI.');
       throw error;
     }
   }
